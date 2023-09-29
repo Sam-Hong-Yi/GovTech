@@ -14,7 +14,12 @@
       <tr><td class="td_game"><div id="cell3" onclick="cellClicked(this.id)" class="fixed"></div></td><td class="td_game"><div id="cell4" onclick="cellClicked(this.id)" class="fixed"></div></td><td class="td_game"><div id="cell5" onclick="cellClicked(this.id)" class="fixed"></div></td></tr>
       <tr><td class="td_game"><div id="cell6" onclick="cellClicked(this.id)" class="fixed"></div></td><td class="td_game"><div id="cell7" onclick="cellClicked(this.id)" class="fixed"></div></td><td class="td_game"><div id="cell8" onclick="cellClicked(this.id)" class="fixed"></div></td></tr>
     </table>
-    
+    <!--    for the user input for accessibility-->
+    <div id="userInput">
+    <label for="cellNumber">Enter a number (1-9):</label>
+    <input type="number" id="cellNumber" min="1" max="9">
+    <button onclick="selectBoxByNumber()">Select</button>
+    </div>
     
     <div id="restart" title="Start new game" onclick="restartGame(true)"><span style="vertical-align:top;position:relative;top:-10px">#</span></div>
     <table>
@@ -710,6 +715,28 @@ function endGame(who) {
         document.getElementById(id).style.cursor = "default";
     }
     setTimeout(restartGame, 800);
+}
+function selectBoxByNumber() {
+    var cellNumberInput = document.getElementById("cellNumber");
+    var cellNumber = parseInt(cellNumberInput.value);
+
+    // Check if the input is within the valid range (1-9)
+    if (cellNumber >= 1 && cellNumber <= 9) {
+        // Calculate the cell index (0-8) from the input number
+        var cellIndex = cellNumber - 1;
+
+        // Get the ID of the corresponding cell div
+        var cellId = "cell" + cellIndex;
+
+        // Call the cellClicked function to simulate a click on the selected cell
+        cellClicked(cellId);
+
+        // Clear the input field
+        cellNumberInput.value = "";
+    } else {
+        // Display an error message if the input is out of range
+        alert("Please enter a number between 1 and 9.");
+    }
 }
 
 </script>
