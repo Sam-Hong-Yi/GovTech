@@ -16,9 +16,10 @@
     </table>
     <!--    for the user input for accessibility-->
     <div id="userInput">
-    <label for="cellNumber">Enter a number (1-9):</label>
-    <input type="number" id="cellNumber" min="1" max="9">
-    <button onclick="selectBoxByNumber()">Select</button>
+    <label for="cellNumber" style="font-size: 2em">Enter a number (1-9):</label>
+    <input  type="number" maxlength="1" id="cellNumber" min="1" max="9" autofocus>
+    <button id="selectBtn"onclick="selectBoxByNumber(), setFocusOnInput()">Select</button>
+    
     </div>
     
     <div id="restart" title="Start new game" onclick="restartGame(true)"><span style="vertical-align:top;position:relative;top:-10px">#</span></div>
@@ -46,16 +47,23 @@
     <div id="optionsDlg" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <h2>How would you like to play?</h2>
-          <h3>Difficulty:</h3>
+        <h2>Which role would Player 1 like to play as?</h2>
+<!--          <h3>Difficulty:</h3>
           <label><input type="radio" name="difficulty" id="r0" value="0">easy&nbsp;</label>
-          <label><input type="radio" name="difficulty" id="r1" value="1" checked>hard</label><br>
+          <label><input type="radio" name="difficulty" id="r1" value="1" checked>hard</label><br>-->
           <h3>Play as:</h3>
           <label><input type="radio" name="player" id="rx" value="x" checked>X (go first)&nbsp;</label>
           <label><input type="radio" name="player" id="ro" value="o">O<br></label>
-          <p><button id="okBtn" onclick="getOptions()">Play</button></p>
+          <!--    for the user input for accessibility-->
+          <div id="userInput">
+            <label for="cellNumber">Enter a number (1-9):</label>
+            <input type="number" id="cellNumber" min="1" max="9">
+            <button onclick="selectBoxByNumber()">Select</button>
+          </div>
+          <p><button id="okBtn" onclick="getOptions(), setFocusOnInput()">Play</button></p>
       </div>
     </div>
+    
     
 
     
@@ -116,6 +124,21 @@ window.onclick = function (evt) {
         modal.style.display = "none";
     }
 };
+// Get the input field
+var input = document.getElementById("cellNumber");
+
+// Execute a function when the user presses a key on the keyboard
+input.addEventListener("keypress", function(event) {
+  // If the user presses the "Enter" key on the keyboard
+  if (event.key === "Enter") {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("selectBtn").click();
+  }
+});
+
+
 
 //==================================
 // HELPER FUNCTIONS
@@ -663,26 +686,26 @@ function showOptions() {
         document.getElementById("rx").checked = true;
         document.getElementById("ro").checked = false;
     }
-    if (difficulty === 0) {
-        document.getElementById("r0").checked = true;
-        document.getElementById("r1").checked = false;
-    }
-    else {
-        document.getElementById("r0").checked = false;
-        document.getElementById("r1").checked = true;
-    }
+//    if (difficulty === 0) {
+//        document.getElementById("r0").checked = true;
+//        document.getElementById("r1").checked = false;
+//    }
+//    else {
+//        document.getElementById("r0").checked = false;
+//        document.getElementById("r1").checked = true;
+//    }
     document.getElementById("optionsDlg").style.display = "block";
 }
 
 function getOptions() {
-    var diffs = document.getElementsByName('difficulty');
-    for (var i = 0; i < diffs.length; i++) {
-        if (diffs[i].checked) {
-            difficulty = parseInt(diffs[i].value);
-            break;
-            // debugger;
-        }
-    }
+//    var diffs = document.getElementsByName('difficulty');
+//    for (var i = 0; i < diffs.length; i++) {
+//        if (diffs[i].checked) {
+//            difficulty = parseInt(diffs[i].value);
+//            break;
+//            // debugger;
+//        }
+//    }
     if (document.getElementById('rx').checked === true) {
         player1 = x;
         player2 = o;
@@ -696,7 +719,7 @@ function getOptions() {
         whoseTurn = player2;
         playerText = oText;
         computerText = xText;
-        setTimeout(makeComputerMove, 400);
+//        setTimeout(makeComputerMove, 400);
     }
     document.getElementById("optionsDlg").style.display = "none";
 }
@@ -748,5 +771,25 @@ function selectBoxByNumber() {
         alert("Please enter a number between 1 and 9.");
     }
 }
+
+function updateInputValue(value) {
+        // Get the input element by its ID
+        var cellNumberInput = document.getElementById("cellNumber");
+
+        // Update the input value in real-time
+        cellNumberInput.value = value;
+
+        // Call the function to select the corresponding cell
+        selectBoxByNumber();
+    }
+function setFocusOnInput() {
+    // Get the input element by its ID
+    var cellNumberInput = document.getElementById("cellNumber");
+
+    // Set focus on the input element
+    cellNumberInput.focus();
+}
+
+    
 
 </script>
