@@ -22,6 +22,15 @@
     
     </div>
     
+    
+    <div style=" font-size:1.5em; position:fixed; top:5em; padding-left: 200px"> 
+        Move History
+    <div id="moveHistory" >
+        
+    <!-- Move history will be displayed here -->
+    </div>
+    </div>
+    
     <div id="restart" title="Start new game" onclick="restartGame(true)"><span style="vertical-align:top;position:relative;top:-10px">#</span></div>
     <table>
       <tr><th class="th_list">Player 1</th><th class="th_list" style="padding-right:10px;padding-left:10px">Player 2</th><th class="th_list">Draws</th></tr>
@@ -45,6 +54,7 @@
     </div>
     <!-- The options dialog -->
     <div id="optionsDlg" class="modal">
+        
       <!-- Modal content -->
       <div class="modal-content">
         <h2>Which role would Player 1 like to play as?</h2>
@@ -198,6 +208,7 @@ var moves = 0,
     computerText = oText,
     difficulty = 1,
     myGrid = null;
+    var moveHistory = [];
 
 //==================================
 // GRID OBJECT
@@ -440,6 +451,12 @@ function cellClicked(id) {
        }
 //        makeComputerMove();
     }
+    var moveText = whoseTurn === player1 ? "Player 1" : "Player 2";
+    moveText += " chose box " + (cell + 1);
+    moveHistory.push(moveText);
+
+    // Update the move history display
+    updateMoveHistory();
     return true;
 }
 
@@ -457,6 +474,7 @@ function restartGame(ask) {
     winner = 0;
     whoseTurn = x;
     myGrid.reset();
+    
     for (var i = 0; i <= 8; i++) {
         var id = "cell" + i.toString();
         document.getElementById(id).innerHTML = "";
@@ -466,6 +484,7 @@ function restartGame(ask) {
     if (ask === true) {
         // setTimeout(assignRoles, 200);
         setTimeout(showOptions, 200);
+        
     } else if (whoseTurn == player2) {
         setTimeout(makeComputerMove, 800);
     }
@@ -678,6 +697,7 @@ function askUser(text) {
 }
 
 function showOptions() {
+    
     if (player1 == o) {
         document.getElementById("rx").checked = false;
         document.getElementById("ro").checked = true;
@@ -788,6 +808,20 @@ function setFocusOnInput() {
 
     // Set focus on the input element
     cellNumberInput.focus();
+}
+function updateMoveHistory() {
+    var historyContainer = document.getElementById("moveHistory");
+    historyContainer.innerHTML = "";
+
+    for (var i = 0; i < moveHistory.length; i++) {
+        var moveItem = document.createElement("p");
+        moveItem.textContent = moveHistory[i];
+        historyContainer.appendChild(moveItem);
+    }
+}
+
+function resetMoveHistory(){
+    moveHistory=[];
 }
 
     
