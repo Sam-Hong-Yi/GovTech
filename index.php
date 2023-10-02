@@ -24,7 +24,7 @@
     
     
     <div style=" font-size:1.5em; position:fixed; top:5em; padding-left: 200px"> 
-        Move History
+        <h3>Move History</h3>
     <div id="moveHistory" >
         
     <!-- Move history will be displayed here -->
@@ -438,6 +438,14 @@ function cellClicked(id) {
     }
     document.getElementById(id).style.cursor = "default";
     myGrid.cells[cell] = whoseTurn;
+    
+    var moveText = whoseTurn === player1 ? "Player 1" : "Player 2";
+    moveText += " chose box " + (cell + 1);
+    moveHistory.push(moveText);
+
+    // Update the move history display
+    updateMoveHistory();
+    
     // Test if we have a winner:
     if (moves >= 5) {
         winner = checkWin();
@@ -449,14 +457,8 @@ function cellClicked(id) {
        else{
            whoseTurn=player1;
        }
-//        makeComputerMove();
     }
-    var moveText = whoseTurn === player1 ? "Player 1" : "Player 2";
-    moveText += " chose box " + (cell + 1);
-    moveHistory.push(moveText);
-
-    // Update the move history display
-    updateMoveHistory();
+    
     return true;
 }
 
@@ -487,116 +489,10 @@ function restartGame(ask) {
         // setTimeout(assignRoles, 200);
         setTimeout(showOptions, 200);
         
-    } else if (whoseTurn == player2) {
-        setTimeout(makeComputerMove, 800);
-    }
+    } 
 }
 
-// The core logic of the game AI:
-//function makeComputerMove() {
-//    // debugger;
-//    if (gameOver) {
-//        return false;
-//    }
-//    var cell = -1,
-//        myArr = [],
-//        corners = [0,2,6,8];
-//    if (moves >= 3) {
-//        cell = myGrid.getFirstWithTwoInARow(computer);
-//        if (cell === false) {
-//            cell = myGrid.getFirstWithTwoInARow(player);
-//        }
-//        if (cell === false) {
-//            if (myGrid.cells[4] === 0 && difficulty == 1) {
-//                cell = 4;
-//            } else {
-//                myArr = myGrid.getFreeCellIndices();
-//                cell = myArr[intRandom(0, myArr.length - 1)];
-//            }
-//        }
-//        // Avoid a catch-22 situation:
-//        if (moves == 3 && myGrid.cells[4] == computer && player == x && difficulty == 1) {
-//            if (myGrid.cells[7] == player && (myGrid.cells[0] == player || myGrid.cells[2] == player)) {
-//                myArr = [6,8];
-//                cell = myArr[intRandom(0,1)];
-//            }
-//            else if (myGrid.cells[5] == player && (myGrid.cells[0] == player || myGrid.cells[6] == player)) {
-//                myArr = [2,8];
-//                cell = myArr[intRandom(0,1)];
-//            }
-//            else if (myGrid.cells[3] == player && (myGrid.cells[2] == player || myGrid.cells[8] == player)) {
-//                myArr = [0,6];
-//                cell = myArr[intRandom(0,1)];
-//            }
-//            else if (myGrid.cells[1] == player && (myGrid.cells[6] == player || myGrid.cells[8] == player)) {
-//                myArr = [0,2];
-//                cell = myArr[intRandom(0,1)];
-//            }
-//        }
-//        else if (moves == 3 && myGrid.cells[4] == player && player == x && difficulty == 1) {
-//            if (myGrid.cells[2] == player && myGrid.cells[6] == computer) {
-//                cell = 8;
-//            }
-//            else if (myGrid.cells[0] == player && myGrid.cells[8] == computer) {
-//                cell = 6;
-//            }
-//            else if (myGrid.cells[8] == player && myGrid.cells[0] == computer) {
-//                cell = 2;
-//            }
-//            else if (myGrid.cells[6] == player && myGrid.cells[2] == computer) {
-//                cell = 0;
-//            }
-//        }
-//    } else if (moves === 1 && myGrid.cells[4] == player && difficulty == 1) {
-//        // if player is X and played center, play one of the corners
-//        cell = corners[intRandom(0,3)];
-//    } else if (moves === 2 && myGrid.cells[4] == player && computer == x && difficulty == 1) {
-//        // if player is O and played center, take two opposite corners
-//        if (myGrid.cells[0] == computer) {
-//            cell = 8;
-//        }
-//        else if (myGrid.cells[2] == computer) {
-//            cell = 6;
-//        }
-//        else if (myGrid.cells[6] == computer) {
-//            cell = 2;
-//        }
-//        else if (myGrid.cells[8] == computer) {
-//            cell = 0;
-//        }
-//    } else if (moves === 0 && intRandom(1,10) < 8) {
-//        // if computer is X, start with one of the corners sometimes
-//        cell = corners[intRandom(0,3)];
-//    } else {
-//        // choose the center of the board if possible
-//        if (myGrid.cells[4] === 0 && difficulty == 1) {
-//            cell = 4;
-//        } else {
-//            myArr = myGrid.getFreeCellIndices();
-//            cell = myArr[intRandom(0, myArr.length - 1)];
-//        }
-//    }
-//    var id = "cell" + cell.toString();
-//    // console.log("computer chooses " + id);
-//    document.getElementById(id).innerHTML = computerText;
-//    document.getElementById(id).style.cursor = "default";
-//    // randomize rotation of marks on the board to make them look
-//    // as if they were handwritten
-//    var rand = Math.random();
-//    if (rand < 0.3) {
-//        document.getElementById(id).style.transform = "rotate(180deg)";
-//    } else if (rand > 0.6) {
-//        document.getElementById(id).style.transform = "rotate(90deg)";
-//    }
-//    myGrid.cells[cell] = computer;
-//    moves += 1;
-//    if (moves >= 5) {
-//        winner = checkWin();
-//    }
-//    if (winner === 0 && !gameOver) {
-//        whoseTurn = player;
-//    }
-//}
+
 
 // Check if the game is over and determine winner
 function checkWin() {
