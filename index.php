@@ -474,6 +474,8 @@ function restartGame(ask) {
     winner = 0;
     whoseTurn = x;
     myGrid.reset();
+    resetMoveHistory();
+    updateMoveHistory();
     
     for (var i = 0; i <= 8; i++) {
         var id = "cell" + i.toString();
@@ -767,6 +769,8 @@ function endGame(who) {
         var id = "cell" + i.toString();
         document.getElementById(id).style.cursor = "default";
     }
+    resetMoveHistory();
+    updateMoveHistory();
     setTimeout(restartGame, 800);
 }
 function selectBoxByNumber() {
